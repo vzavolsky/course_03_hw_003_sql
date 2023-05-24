@@ -1,12 +1,8 @@
 package com.zavolsky.course_03.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
-@Entity
-@Table(name = "students", schema = "public")
+@Entity(name = "students")
 public class Student {
 
     @Id
@@ -16,12 +12,9 @@ public class Student {
     private String name;
     private int age;
 
-    public Student() {}
-
-    public Student(String name, int age) {
-        this.name = name;
-        this.age = age;
-    }
+    @ManyToOne
+    @JoinColumn(name = "faculty_id")
+    private Faculty faculty;
 
     public void setId(Long id) {
         this.id = id;

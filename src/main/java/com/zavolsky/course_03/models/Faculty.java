@@ -1,12 +1,9 @@
 package com.zavolsky.course_03.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.util.Collection;
 
-@Entity
-@Table(name = "faculties", schema = "public")
+@Entity(name = "faculties")
 public class Faculty {
 
     @Id
@@ -16,12 +13,8 @@ public class Faculty {
     private String name;
     String color;
 
-    public Faculty(String name, String color) {
-        this.name = name;
-        this.color = color;
-    }
-
-    public Faculty() {}
+    @OneToMany(mappedBy = "faculty")
+    private Collection<Student> students;
 
     public void setId(Long id) {
         this.id = id;

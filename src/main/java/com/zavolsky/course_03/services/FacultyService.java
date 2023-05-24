@@ -1,24 +1,43 @@
 package com.zavolsky.course_03.services;
 
 import com.zavolsky.course_03.models.Faculty;
+import com.zavolsky.course_03.repositories.FacultyRepository;
+import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 
-public interface FacultyService {
+@Service
+public class FacultyService {
 
-    final Map<Long, Faculty> faculties = null;
+    private final FacultyRepository facultyRepository;
 
-    public Faculty add(String name, String color);
+    public FacultyService(FacultyRepository facultyRepository) {
+        this.facultyRepository = facultyRepository;
+    }
 
-    public Collection<Faculty> getAll();
+    public Collection<Faculty> getAll() {
+        return facultyRepository.findAll();
+    }
 
-    public Faculty get(Long id);
+    public Collection<Faculty> getAllByColor(String color) {
+        return facultyRepository.findAllByColor(color);
+    }
 
-    public Faculty update(Long id, String name, String color);
+    public Faculty get(Long id) {
+        return facultyRepository.findById(id).get();
+    }
 
-    public Faculty remove(Long id);
+    public Faculty update(Faculty faculty) {
+        return facultyRepository.save(faculty);
+    }
 
-    Collection<Faculty> getAllByColor(String color);
+    public void remove(Faculty faculty) {
+        facultyRepository.delete(faculty);
+    }
+
+    /*public ArrayList<Faculty> getFacultyByStudentId(Long studentId) {
+        return facultyRepository.getFacultyByStudentId(studentId);
+    }*/
 
 }

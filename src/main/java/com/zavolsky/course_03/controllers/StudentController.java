@@ -1,15 +1,14 @@
 package com.zavolsky.course_03.controllers;
 
 import com.zavolsky.course_03.exceptions.RequestErrorException;
+import com.zavolsky.course_03.models.Faculty;
 import com.zavolsky.course_03.models.Student;
-import com.zavolsky.course_03.repositories.StudentRepository;
 import com.zavolsky.course_03.services.StudentService;
-import com.zavolsky.course_03.services.impl.StudentServiceImpl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 
 @RestController
 @RequestMapping(path = "/student")
@@ -17,41 +16,72 @@ public class StudentController {
 
     private StudentService studentService;
 
-    public StudentController(StudentServiceImpl studentService) {
+    public StudentController(StudentService studentService) {
         this.studentService = studentService;
     }
 
-    @PostMapping(path = "/add")
-    public Student add(@RequestParam("name") String name, @RequestParam("age") int age) {
-        return studentService.add(name, age);
+    @PostMapping // Add a student.
+    public ResponseEntity<Student> add(@RequestBody Student student) {
+        return ResponseEntity.ok(studentService.update(student));
     }
 
-    @GetMapping(path = "/get")
-    public Collection<Student> getAll(@RequestParam(value = "age", required = false) Integer age) {
-        return age == null ? studentService.getAll() : studentService.getAllByAge(age);
-    }
-
-    @GetMapping(path = "/get/{id}")
-    public ResponseEntity<Student> get(@PathVariable("id") Long id) {
-        if (id == null) {
-            throw new RequestErrorException("Id can't be empty.");
+    @GetMapping
+    public ResponseEntity<Collection<Student>> findStudents(@RequestParam(value = "name", required = false) String name) {
+        if (name != null && !name.isBlank()) {
+            return ResponseEntity.ok(studentService.findByName(name)); // Find student by name field.
         }
-        Student student = studentService.get(id);
-        return ResponseEntity.ok(student);
+        return ResponseEntity.ok(studentService.findAll()); // Find all students.
     }
 
-    @GetMapping(path = "/update")
-    public Student update(
-            @RequestParam("id") Long id,
-            @RequestParam("name") String name,
-            @RequestParam("age") Integer age) {
-        return studentService.update(id, name, age);
+    @GetMapping(path = "/{id}") // Find a student by ID.
+    public ResponseEntity<Student> get(@PathVariable Long id) {
+        return ResponseEntity.ok(studentService.get(id));
     }
 
-    @GetMapping(path = "/remove/{id}")
-    public ResponseEntity<Student> remove(@PathVariable("id") Long id) {
-        studentService.remove(id);
+    @PutMapping // Replace a student's data.
+    public ResponseEntity<Student> update(@RequestBody Student student) {
+        return ResponseEntity.ok(studentService.update(student));
+    }
+
+    @DeleteMapping // Delete a student.
+    public ResponseEntity<Student> remove(@RequestBody Student student) {
+        studentService.remove(student);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping(path = "/age") // Find students with specific interval of ages.
+    public ResponseEntity<Collection<Student>> findAllByAgeInterval(
+            @RequestParam(value = "min", required = false) Integer min,
+            @RequestParam(value = "max", required = false) Integer max) {
+        if (min != null && max != null) {
+            return ResponseEntity.ok(studentService.findByAgeBetween(min, max));
+        }
+        return ResponseEntity.ok(studentService.findAllByAgeInterval());
+    }
+
+    @GetMapping(path = "/names") // Return the list with names only.
+    public ResponseEntity<ArrayList<String>> findAllNamesOnly() {
+        return ResponseEntity.ok(studentService.findAllNamesOnly());
+    }
+
+    @GetMapping(path = "/age/asc") // Return the list of students with sorted ages.
+    public ResponseEntity<Collection<Student>> findAllOrderByAge() {
+        return ResponseEntity.ok(studentService.findAllBySOrderByAge());
+    }
+
+    @GetMapping(path = "/agelessid") // Return the list ofr students where their ID less than an age.
+    public ResponseEntity<Collection<Student>> findAllWhereAgeLessId() {
+        return ResponseEntity.ok(studentService.findAllWhereAgeLessId());
+    }
+
+    @GetMapping(path = "/age/{age}") // Find all students with specific age.
+    public ResponseEntity<Collection<Student>> findAllByAge(@PathVariable Integer age) {
+        return ResponseEntity.ok(studentService.getAllByAge(age));
+    }
+
+    /*@GetMapping(path = "/age/{age}")
+    public ResponseEntity<Collection<Student>> findAllByAge(@PathVariable Integer age) {
+        return ResponseEntity.ok(studentService.getAllByAge(age));
+    }*/
 
 }

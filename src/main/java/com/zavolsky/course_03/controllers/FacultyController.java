@@ -3,11 +3,11 @@ package com.zavolsky.course_03.controllers;
 import com.zavolsky.course_03.exceptions.RequestErrorException;
 import com.zavolsky.course_03.models.Faculty;
 import com.zavolsky.course_03.services.FacultyService;
-import com.zavolsky.course_03.services.impl.FacultyServiceImpl;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Map;
 
 @RestController
 @RequestMapping(path = "/faculty")
@@ -15,42 +15,44 @@ public class FacultyController {
 
     private FacultyService facultyService;
 
-    public FacultyController(FacultyServiceImpl facultyService) {
+    public FacultyController(FacultyService facultyService) {
         this.facultyService = facultyService;
     }
 
-    @PostMapping(path = "/add")
-    public Faculty add(@RequestParam("name") String name, @RequestParam("color") String color) {
-        return facultyService.add(name, color);
+    @PostMapping
+    public ResponseEntity<Faculty> add(@RequestBody Faculty faculty) {
+        return ResponseEntity.ok(facultyService.update(faculty));
     }
 
-    @GetMapping(path = "/get")
-    public Collection<Faculty> getAll(@RequestParam(value = "color", required = false) String color) {
-        return color == null ? facultyService.getAll() : facultyService.getAllByColor(color);
+    @GetMapping
+    public ResponseEntity<Collection<Faculty>> getAll() {
+        return ResponseEntity.ok(facultyService.getAll());
     }
 
-    @GetMapping(path = "/get/{id}")
-    public Faculty get(@PathVariable("id") Long id) {
-        if (id == null) {
-            throw new RequestErrorException("Id can't be empty.");
-        }
-        return facultyService.get(id);
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<Faculty> get(@PathVariable Long id) {
+        return ResponseEntity.ok(facultyService.get(id));
     }
 
-    @GetMapping(path = "/update")
-    public Faculty update(
-            @RequestParam("id") Long id,
-            @RequestParam("name") String name,
-            @RequestParam("color") String color) {
-        return facultyService.update(id, name, color);
+    @PutMapping
+    public ResponseEntity<Faculty> update(@RequestBody Faculty faculty) {
+        return ResponseEntity.ok(facultyService.update(faculty));
     }
 
-    @GetMapping(path = "/remove/{id}")
-    public Faculty remove(@PathVariable("id") Long id) {
-        if (id == null) {
-            throw new RequestErrorException("Id can't be empty.");
-        }
-        return facultyService.remove(id);
+    @DeleteMapping
+    public ResponseEntity<Faculty> remove(@RequestBody Faculty faculty) {
+        facultyService.remove(faculty);
+        return ResponseEntity.ok().build();
+    }
+
+    /*@GetMapping(path = "student/{id}")
+    public ResponseEntity<ArrayList<Faculty>> getFacultyByStudentId (@PathVariable Long id) {
+        return ResponseEntity.ok(facultyService.getFacultyByStudentId(id));
+    }*/
+
+    @GetMapping(path = "/color/{color}")
+    public ResponseEntity<Collection<Faculty>> findAllByColor (@PathVariable String color) {
+        return ResponseEntity.ok(facultyService.getAllByColor(color));
     }
 
 }
