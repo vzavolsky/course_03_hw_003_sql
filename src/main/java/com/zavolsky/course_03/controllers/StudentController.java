@@ -1,7 +1,5 @@
 package com.zavolsky.course_03.controllers;
 
-import com.zavolsky.course_03.exceptions.RequestErrorException;
-import com.zavolsky.course_03.models.Faculty;
 import com.zavolsky.course_03.models.Student;
 import com.zavolsky.course_03.services.StudentService;
 import org.springframework.http.ResponseEntity;
@@ -9,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/student")
@@ -22,7 +21,7 @@ public class StudentController {
 
     @PostMapping // Add a student.
     public ResponseEntity<Student> add(@RequestBody Student student) {
-        return ResponseEntity.ok(studentService.update(student));
+        return ResponseEntity.ok(studentService.add(student));
     }
 
     @GetMapping
@@ -34,19 +33,18 @@ public class StudentController {
     }
 
     @GetMapping(path = "/{id}") // Find a student by ID.
-    public ResponseEntity<Student> get(@PathVariable Long id) {
+    public ResponseEntity<Optional<Student>> get(@PathVariable Long id) {
         return ResponseEntity.ok(studentService.get(id));
     }
 
     @PutMapping // Replace a student's data.
-    public ResponseEntity<Student> update(@RequestBody Student student) {
-        return ResponseEntity.ok(studentService.update(student));
+    public ResponseEntity<Optional<Student>> update(@RequestBody Long id, @RequestBody Student student) {
+        return ResponseEntity.ok(studentService.update(id, student));
     }
 
     @DeleteMapping // Delete a student.
-    public ResponseEntity<Student> remove(@RequestBody Student student) {
-        studentService.remove(student);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Optional<Student>> remove(@RequestBody Long id) {
+        return ResponseEntity.ok(studentService.remove(id));
     }
 
     @GetMapping(path = "/age") // Find students with specific interval of ages.

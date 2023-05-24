@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 
 @Service
 public class StudentService {
@@ -16,7 +17,17 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
-    public Student update(Student student) {
+    public Optional<Student> update(Long id, Student student) {
+        return studentRepository.findById(id)
+                .map(s -> {
+                    s.setName(student.getName());
+                    s.setAge(student.getAge());
+                    return studentRepository.save(s);
+                });
+    }
+
+    public Student add(Student student) {
+        student.setId(null);
         return studentRepository.save(student);
     }
 
@@ -24,12 +35,16 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
-    public Student get(Long id) {
-        return studentRepository.findById(id).get();
+    public Optional<Student> get(Long id) {
+        return studentRepository.findById(id);
     }
 
-    public void remove(Student student) {
-        studentRepository.delete(student);
+    public Optional<Student> remove(Long id) {
+        return studentRepository.findById(id)
+                .map(student -> {
+                    studentRepository.deleteById(id);
+                    return student;
+                });
     }
 
     public Collection<Student> getAllByAge(Integer age) {

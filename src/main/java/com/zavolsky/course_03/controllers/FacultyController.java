@@ -1,6 +1,5 @@
 package com.zavolsky.course_03.controllers;
 
-import com.zavolsky.course_03.exceptions.RequestErrorException;
 import com.zavolsky.course_03.models.Faculty;
 import com.zavolsky.course_03.services.FacultyService;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/faculty")
@@ -21,7 +21,7 @@ public class FacultyController {
 
     @PostMapping
     public ResponseEntity<Faculty> add(@RequestBody Faculty faculty) {
-        return ResponseEntity.ok(facultyService.update(faculty));
+        return ResponseEntity.ok(facultyService.add(faculty));
     }
 
     @GetMapping
@@ -30,19 +30,18 @@ public class FacultyController {
     }
 
     @GetMapping(path = "/{id}")
-    public ResponseEntity<Faculty> get(@PathVariable Long id) {
+    public ResponseEntity<Optional<Faculty>> get(@PathVariable Long id) {
         return ResponseEntity.ok(facultyService.get(id));
     }
 
     @PutMapping
-    public ResponseEntity<Faculty> update(@RequestBody Faculty faculty) {
-        return ResponseEntity.ok(facultyService.update(faculty));
+    public ResponseEntity<Optional<Faculty>> update(@RequestBody Long id, @RequestBody Faculty faculty) {
+        return ResponseEntity.ok(facultyService.update(id, faculty));
     }
 
     @DeleteMapping
-    public ResponseEntity<Faculty> remove(@RequestBody Faculty faculty) {
-        facultyService.remove(faculty);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Optional<Faculty>> remove(@RequestBody Long id) {
+        return ResponseEntity.ok(facultyService.remove(id));
     }
 
     @GetMapping(path = "student/{id}")
