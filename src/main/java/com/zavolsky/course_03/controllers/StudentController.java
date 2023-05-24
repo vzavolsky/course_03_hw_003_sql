@@ -1,7 +1,10 @@
 package com.zavolsky.course_03.controllers;
 
+import com.zavolsky.course_03.models.Faculty;
 import com.zavolsky.course_03.models.Student;
 import com.zavolsky.course_03.services.StudentService;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +14,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/student")
+@Tag(name = "Students UI", description = "UI for list of students.")
 public class StudentController {
 
     private StudentService studentService;
@@ -67,7 +71,7 @@ public class StudentController {
         return ResponseEntity.ok(studentService.findAllBySOrderByAge());
     }
 
-    @GetMapping(path = "/agelessid") // Return the list ofr students where their ID less than an age.
+    @GetMapping(path = "/agelessid") // Return the list of students where their ID less than an age.
     public ResponseEntity<Collection<Student>> findAllWhereAgeLessId() {
         return ResponseEntity.ok(studentService.findAllWhereAgeLessId());
     }
@@ -75,6 +79,16 @@ public class StudentController {
     @GetMapping(path = "/age/{age}") // Find all students with specific age.
     public ResponseEntity<Collection<Student>> findAllByAge(@PathVariable Integer age) {
         return ResponseEntity.ok(studentService.getAllByAge(age));
+    }
+
+    @GetMapping(path = "/names/{ch}") // Find all students with a specific character in their names.
+    public ResponseEntity<Collection<Student>> findAllWithCh(@PathVariable String ch) {
+        return ResponseEntity.ok(studentService.findAllWithCh(ch));
+    }
+
+    @GetMapping(path = "/{id}/faculty") // Return list of faculty by student's id.
+    public ResponseEntity<Optional<Faculty>> getFacultyByStudentId(@PathVariable Long id) {
+        return ResponseEntity.ok(studentService.getFacultyByStudentId(id));
     }
 
 }

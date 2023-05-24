@@ -1,0 +1,3 @@
+GET http://localhost:8080/faculty/nameorcolor/blue
+###
+GET http://localhost:8080/faculty/1/students

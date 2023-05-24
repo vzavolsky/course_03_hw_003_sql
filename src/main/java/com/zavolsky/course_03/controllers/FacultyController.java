@@ -3,15 +3,18 @@ package com.zavolsky.course_03.controllers;
 import com.zavolsky.course_03.models.Faculty;
 import com.zavolsky.course_03.models.Student;
 import com.zavolsky.course_03.services.FacultyService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
 @RequestMapping(path = "/faculty")
+@Tag(name = "Faculties UI",description = "UI for list of faculties.")
 public class FacultyController {
 
     private FacultyService facultyService;
@@ -45,11 +48,6 @@ public class FacultyController {
         return ResponseEntity.ok(facultyService.remove(id));
     }
 
-    @GetMapping(path = "student/{id}")
-    public ResponseEntity<ArrayList<Faculty>> getFacultyByStudentId (@PathVariable Long id) {
-        return ResponseEntity.ok(facultyService.getFacultyByStudentId(id));
-    }
-
     @GetMapping(path = "/color/{color}")
     public ResponseEntity<Collection<Faculty>> findAllByColor (@PathVariable String color) {
         return ResponseEntity.ok(facultyService.getAllByColor(color));
@@ -59,5 +57,10 @@ public class FacultyController {
     public ResponseEntity<Collection<Faculty>> getStudentsByNameOrColor(@PathVariable String nameOrColor) {
         return ResponseEntity.ok(facultyService.getStudentsByNameOrColor(nameOrColor));
     }
+
+    /*@GetMapping(path = "/{id}/students")
+    public ResponseEntity<ArrayList<Student>> getStudentsByFacultyId (@PathVariable Long id) {
+        return ResponseEntity.ok(facultyService.getStudentsByFacultyId(id));
+    }*/
 
 }

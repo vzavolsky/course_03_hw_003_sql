@@ -1,5 +1,6 @@
 package com.zavolsky.course_03.services;
 
+import com.zavolsky.course_03.models.Faculty;
 import com.zavolsky.course_03.models.Student;
 import com.zavolsky.course_03.repositories.StudentRepository;
 import org.springframework.stereotype.Service;
@@ -68,7 +69,7 @@ public class StudentService {
     }
 
     public Collection<Student> findAllWithCh(String ch) {
-        return studentRepository.findAllByNameContains(ch);
+        return studentRepository.findAllStudentsNamesConsistsCh(ch);
     }
 
     public Collection<Student> findAllWhereAgeLessId() {
@@ -77,5 +78,13 @@ public class StudentService {
 
     public Collection<Student> findAllBySOrderByAge() {
         return studentRepository.findAllOrderByAge();
+    }
+
+    public Optional<Faculty> getFacultyByStudentId(Long id) {
+        return Optional.ofNullable(
+                studentRepository.findById(id)
+                        .map(Student::getFaculty)
+                        .orElse(null)
+        );
     }
 }

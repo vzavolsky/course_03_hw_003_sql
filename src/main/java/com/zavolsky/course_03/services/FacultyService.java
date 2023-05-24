@@ -1,11 +1,14 @@
 package com.zavolsky.course_03.services;
 
 import com.zavolsky.course_03.models.Faculty;
+import com.zavolsky.course_03.models.Student;
 import com.zavolsky.course_03.repositories.FacultyRepository;
+import com.zavolsky.course_03.repositories.StudentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -51,11 +54,11 @@ public class FacultyService {
                 });
     }
 
-    public ArrayList<Faculty> getFacultyByStudentId(Long studentId) {
-        return facultyRepository.getFacultyByStudentId(studentId);
-    }
-
     public Collection<Faculty> getStudentsByNameOrColor(String nameOrColor) {
         return facultyRepository.findAllByNameContainsIgnoreCaseOrColorContainsIgnoreCase(nameOrColor, nameOrColor);
     }
+
+    /*public ArrayList<Student> getStudentsByFacultyId(Long id) {
+        return studentRepository.findAllByFaculty_Id(id);
+    }*/
 }
