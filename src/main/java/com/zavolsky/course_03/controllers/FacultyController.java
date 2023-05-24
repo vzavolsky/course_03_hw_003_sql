@@ -1,6 +1,7 @@
 package com.zavolsky.course_03.controllers;
 
 import com.zavolsky.course_03.models.Faculty;
+import com.zavolsky.course_03.models.Student;
 import com.zavolsky.course_03.services.FacultyService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -52,6 +53,11 @@ public class FacultyController {
     @GetMapping(path = "/color/{color}")
     public ResponseEntity<Collection<Faculty>> findAllByColor (@PathVariable String color) {
         return ResponseEntity.ok(facultyService.getAllByColor(color));
+    }
+
+    @GetMapping(path = "/nameorcolor/{nameOrColor}")
+    public ResponseEntity<Collection<Faculty>> getStudentsByNameOrColor(@PathVariable String nameOrColor) {
+        return ResponseEntity.ok(facultyService.getStudentsByNameOrColor(nameOrColor));
     }
 
 }

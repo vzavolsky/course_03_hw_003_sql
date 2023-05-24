@@ -10,8 +10,7 @@ import java.util.Collection;
 
 public interface StudentRepository extends JpaRepository<Student, Long> {
 
-    @Query(value = "SELECT * FROM students WHERE age = :age", nativeQuery = true)
-    Collection<Student> findAllByAge(@Param("age") final Integer age);
+    Collection<Student> findAllByAge(Integer age);
 
     Collection<Student> findByName(String name);
 
@@ -30,5 +29,4 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     @Query(value = "SELECT * FROM students ORDER BY age", nativeQuery = true)
     Collection<Student> findAllOrderByAge();
-
 }
