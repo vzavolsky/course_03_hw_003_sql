@@ -36,8 +36,8 @@ public class FacultyService {
         facultyRepository.delete(faculty);
     }
 
-    /*public ArrayList<Faculty> getFacultyByStudentId(Long studentId) {
+    public ArrayList<Faculty> getFacultyByStudentId(Long studentId) {
         return facultyRepository.getFacultyByStudentId(studentId);
-    }*/
+    }
 
 }

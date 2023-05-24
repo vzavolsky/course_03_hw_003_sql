@@ -79,9 +79,4 @@ public class StudentController {
         return ResponseEntity.ok(studentService.getAllByAge(age));
     }
 
-    /*@GetMapping(path = "/age/{age}")
-    public ResponseEntity<Collection<Student>> findAllByAge(@PathVariable Integer age) {
-        return ResponseEntity.ok(studentService.getAllByAge(age));
-    }*/
-
 }

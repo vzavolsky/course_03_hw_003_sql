@@ -45,10 +45,10 @@ public class FacultyController {
         return ResponseEntity.ok().build();
     }
 
-    /*@GetMapping(path = "student/{id}")
+    @GetMapping(path = "student/{id}")
     public ResponseEntity<ArrayList<Faculty>> getFacultyByStudentId (@PathVariable Long id) {
         return ResponseEntity.ok(facultyService.getFacultyByStudentId(id));
-    }*/
+    }
 
     @GetMapping(path = "/color/{color}")
     public ResponseEntity<Collection<Faculty>> findAllByColor (@PathVariable String color) {
