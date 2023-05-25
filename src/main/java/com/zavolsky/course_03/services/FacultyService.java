@@ -6,7 +6,6 @@ import com.zavolsky.course_03.repositories.FacultyRepository;
 import com.zavolsky.course_03.repositories.StudentRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -15,9 +14,11 @@ import java.util.Optional;
 public class FacultyService {
 
     private final FacultyRepository facultyRepository;
+    private final StudentRepository studentRepository;
 
-    public FacultyService(FacultyRepository facultyRepository) {
+    public FacultyService(FacultyRepository facultyRepository, StudentRepository studentRepository) {
         this.facultyRepository = facultyRepository;
+        this.studentRepository = studentRepository;
     }
 
     public Collection<Faculty> getAll() {
@@ -58,7 +59,7 @@ public class FacultyService {
         return facultyRepository.findAllByNameContainsIgnoreCaseOrColorContainsIgnoreCase(nameOrColor, nameOrColor);
     }
 
-    /*public ArrayList<Student> getStudentsByFacultyId(Long id) {
+    public List<Student> getStudentsByFacultyId(Long id) {
         return studentRepository.findAllByFaculty_Id(id);
-    }*/
+    }
 }

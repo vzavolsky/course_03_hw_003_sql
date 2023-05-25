@@ -31,6 +31,6 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     @Query(value = "SELECT s.id, s.name, s.age FROM students as s WHERE s.name LIKE '%:ch%'", nativeQuery = true)
     Collection<Student> findAllStudentsNamesConsistsCh(String ch);
 
-    /*ArrayList<Student> findAllByFaculty_Id(Long id);*/
+    List<Student> findAllByFaculty_Id(Long id);
 
 }
